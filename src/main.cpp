@@ -76,12 +76,12 @@ String time_zones[][2] =
     {{"-1200", "<-12>12"}, {"-1130", "<-1130>11:30"}, {"-1100", "<-11>11"}, {"-1030", "<-1030>10:30"}, {"-1000", "<-10>10"}, {"-0930", "<-0930>9:30"}, {"-0900", "<-09>9"}, {"-0830", "<-0830>8:30"}, {"-0800", "<-08>8"}, {"-0730", "<-0730>7:30"}, {"-0700", "<-07>7"}, {"-0630", "<-0630>6:30"}, {"-0600", "<-06>6"}, {"-0530", "<-0530>5:30"}, {"-0500", "<-05>5"}, {"-0430", "<-0430>4:30"}, {"-0400", "<-04>4"}, {"-0330", "<-0330>3:30"}, {"-0300", "<-03>3"}, {"-0230", "<-0230>2:30"}, {"-0200", "<-02>2"}, {"-0130", "<-0130>1:30"}, {"-0100", "<-01>1"}, {"-0030", "<-0030>0:30"}, {"+0000", "<+00>-0"}, {"+0030", "<+0030>-0:30"}, {"+0100", "<+01>-1"}, {"+0130", "<+0130>-1:30"}, {"+0200", "<+02>-2"}, {"+0230", "<+0230>-2:30"}, {"+0300", "<+03>-3"}, {"+0330", "<+0330>-3:30"}, {"+0400", "<+04>-4"}, {"+0430", "<+0430>-4:30"}, {"+0500", "<+05>-5"}, {"+0530", "<+0530>-5:30"}, {"+0600", "<+06>-6"}, {"+0630", "<+0630>-6:30"}, {"+0700", "<+07>-7"}, {"+0730", "<+0730>-7:30"}, {"+0800", "<+08>-8"}, {"+0830", "<+0830>-8:30"}, {"+0900", "<+09>-9"}, {"+0930", "<+0930>-9:30"}, {"+1000", "<+10>-10"}, {"+1030", "<+1030>-10:30"}, {"+1100", "<+11>-11"}, {"+1130", "<+1130>-11:30"}, {"+1200", "<+12>-12"}, {"+1230", "<+1230>-12:30"}, {"+1300", "<+13>-13"}, {"+1330", "<+1330>-13:30"}, {"+1400", "<+14>-14"}};
 int timezone = 25;
 
-void clear_top_half()
+void clear_top_half() // clear top half of the oled display
 {
   display.fillRect(0, 0, display.width(), display.height() / 2, BLACK);
 }
 
-void clear_bottom_half()
+void clear_bottom_half() // clear bottom half of the oled display
 {
   display.fillRect(0, display.height() / 2, display.width(), display.height() / 2, BLACK);
 }
@@ -97,7 +97,7 @@ void print_line(String text, int text_size, int row, int column)
   // delay(2000);
 }
 
-void update_time(void)
+void update_time(void) // update time when not using NTP server
 {
   timeNow = millis() / 1000;
   seconds = timeNow - timeLast;
@@ -127,7 +127,7 @@ void update_time(void)
   }
 }
 
-void update_time_wifi(void)
+void update_time_wifi(void) // update time when connected to the NTP server
 {
   struct tm timeinfo;
   getLocalTime(&timeinfo);
@@ -244,7 +244,7 @@ int wait_for_button_press()
   }
 }
 
-void set_time_Auto()
+void set_time_Auto() // select time zone
 {
 
   int temp_timezone = timezone;
@@ -286,7 +286,7 @@ void set_time_Auto()
   tzset();
 }
 
-void set_time_manual()
+void set_time_manual() // configure time manually
 {
   int temp_day = days;
   while (true)
@@ -396,7 +396,7 @@ void set_time_manual()
   delay(1000);
 }
 
-void run_mode_time(int mode)
+void run_mode_time(int mode) // function for runing selected option in the sub menu within "set_time"
 {
   if (mode == 0)
   {
@@ -530,7 +530,7 @@ void set_alarm(int alarm)
   delay(1000);
 }
 
-void run_mode(int mode)
+void run_mode(int mode) // function for runing selected option in the main menu
 {
   if (mode == 0)
   {
@@ -549,7 +549,7 @@ void run_mode(int mode)
   }
 }
 
-void go_to_menu(void)
+void go_to_menu(void) // function for main menu
 {
   while (okButtonPressed)
   {
@@ -589,7 +589,7 @@ void go_to_menu(void)
   }
 }
 
-void check_temp(void)
+void check_temp(void) // function for DHT22 sensor data
 {
   TempAndHumidity data = dhtSensor.getTempAndHumidity();
   bool all_good = true;
