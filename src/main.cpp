@@ -162,8 +162,6 @@ void ring_alarm()
 
     alarm_ringing = true;
 
-    digitalWrite(LED_1, HIGH);
-
     for (int i = 0; i < n_notes; i++)
     {
       if (cancelButtonPressed == true)
@@ -171,9 +169,11 @@ void ring_alarm()
         delay(200);
         break;
       }
+      // Toggle LED state
+      digitalWrite(LED_1, i % 2);
+
       tone(BUZZER, notes[i]);
       delay(500);
-      digitalWrite(LED_1, LOW);
       noTone(BUZZER);
       delay(2);
     }
