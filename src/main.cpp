@@ -76,6 +76,16 @@ String time_zones[][2] =
     {{"-1200", "<-12>12"}, {"-1130", "<-1130>11:30"}, {"-1100", "<-11>11"}, {"-1030", "<-1030>10:30"}, {"-1000", "<-10>10"}, {"-0930", "<-0930>9:30"}, {"-0900", "<-09>9"}, {"-0830", "<-0830>8:30"}, {"-0800", "<-08>8"}, {"-0730", "<-0730>7:30"}, {"-0700", "<-07>7"}, {"-0630", "<-0630>6:30"}, {"-0600", "<-06>6"}, {"-0530", "<-0530>5:30"}, {"-0500", "<-05>5"}, {"-0430", "<-0430>4:30"}, {"-0400", "<-04>4"}, {"-0330", "<-0330>3:30"}, {"-0300", "<-03>3"}, {"-0230", "<-0230>2:30"}, {"-0200", "<-02>2"}, {"-0130", "<-0130>1:30"}, {"-0100", "<-01>1"}, {"-0030", "<-0030>0:30"}, {"+0000", "<+00>-0"}, {"+0030", "<+0030>-0:30"}, {"+0100", "<+01>-1"}, {"+0130", "<+0130>-1:30"}, {"+0200", "<+02>-2"}, {"+0230", "<+0230>-2:30"}, {"+0300", "<+03>-3"}, {"+0330", "<+0330>-3:30"}, {"+0400", "<+04>-4"}, {"+0430", "<+0430>-4:30"}, {"+0500", "<+05>-5"}, {"+0530", "<+0530>-5:30"}, {"+0600", "<+06>-6"}, {"+0630", "<+0630>-6:30"}, {"+0700", "<+07>-7"}, {"+0730", "<+0730>-7:30"}, {"+0800", "<+08>-8"}, {"+0830", "<+0830>-8:30"}, {"+0900", "<+09>-9"}, {"+0930", "<+0930>-9:30"}, {"+1000", "<+10>-10"}, {"+1030", "<+1030>-10:30"}, {"+1100", "<+11>-11"}, {"+1130", "<+1130>-11:30"}, {"+1200", "<+12>-12"}, {"+1230", "<+1230>-12:30"}, {"+1300", "<+13>-13"}, {"+1330", "<+1330>-13:30"}, {"+1400", "<+14>-14"}};
 int timezone = 25;
 
+void clear_top_half()
+{
+  display.fillRect(0, 0, display.width(), display.height() / 2, BLACK);
+}
+
+void clear_bottom_half()
+{
+  display.fillRect(0, display.height() / 2, display.width(), display.height() / 2, BLACK);
+}
+
 void print_line(String text, int text_size, int row, int column)
 {
   display.setTextSize(text_size);
@@ -175,7 +185,7 @@ void ring_alarm()
 
 void update_time_with_check_alarm()
 {
-  display.clearDisplay();
+  clear_top_half();
 
   if (time_mode)
   {
@@ -549,35 +559,38 @@ void check_temp(void)
 {
   TempAndHumidity data = dhtSensor.getTempAndHumidity();
   bool all_good = true;
+  String warnings = "";
+
   if (data.temperature > 35)
   {
     all_good = false;
-    digitalWrite(LED_2, HIGH);
-    print_line("TEMP HIGH", 1, 40, 0);
+    warnings += "TEMP HIGH\n\n";
   }
-
   else if (data.temperature < 25)
   {
     all_good = false;
-    digitalWrite(LED_2, HIGH);
-    print_line("TEMP LOW", 1, 40, 0);
+    warnings += "TEMP LOW\n\n";
   }
 
   if (data.humidity > 85)
   {
     all_good = false;
-    digitalWrite(LED_2, HIGH);
-    print_line("HUMD HIGH", 1, 50, 0);
+    warnings += "HUMD HIGH\n\n";
   }
-
   else if (data.humidity < 35)
   {
     all_good = false;
-    digitalWrite(LED_2, HIGH);
-    print_line("HUMD LOW", 1, 50, 0);
+    warnings += "HUMD LOW\n\n";
   }
 
-  if (all_good)
+  clear_bottom_half();
+
+  if (!all_good)
+  {
+    digitalWrite(LED_2, HIGH);
+    print_line(warnings, 1, 40, 0); // Adjust the position as needed
+  }
+  else
   {
     digitalWrite(LED_2, LOW);
   }
@@ -665,8 +678,7 @@ void setup()
 
   delay(1000);
 
-  // Set interrupt for cancel button
-  pinMode(OK, INPUT_PULLUP); // Assuming the button is connected between pin and GND
+  pinMode(OK, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(OK), okInterrupt, FALLING);
 
   pinMode(CANCEL, INPUT_PULLUP);
@@ -687,6 +699,6 @@ void loop()
     okButtonPressed = false;
   }
 
-  update_time_with_check_alarm();
   check_temp();
+  update_time_with_check_alarm();
 }
