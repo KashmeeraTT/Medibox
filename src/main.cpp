@@ -173,6 +173,7 @@ void ring_alarm()
       }
       tone(BUZZER, notes[i]);
       delay(500);
+      digitalWrite(LED_1, LOW);
       noTone(BUZZER);
       delay(2);
     }
