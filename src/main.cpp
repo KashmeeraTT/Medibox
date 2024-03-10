@@ -71,7 +71,7 @@ String options[] = {"1 - Set Time", "2 - Set Alarm 1", "3 - Set Alarm 2", "4 - S
 int time_mode_current = 0;
 int max_time_modes = 2;
 String time_options[] = {"1 - Set Time Auto", "2 - Set Time Manual"};
-bool time_mode = false; // true → time mode auto, false → time mode manual
+bool time_mode = true; // true → time mode auto, false → time mode manual
 String time_zones[][2] =
     {{"-1200", "<-12>12"}, {"-1130", "<-1130>11:30"}, {"-1100", "<-11>11"}, {"-1030", "<-1030>10:30"}, {"-1000", "<-10>10"}, {"-0930", "<-0930>9:30"}, {"-0900", "<-09>9"}, {"-0830", "<-0830>8:30"}, {"-0800", "<-08>8"}, {"-0730", "<-0730>7:30"}, {"-0700", "<-07>7"}, {"-0630", "<-0630>6:30"}, {"-0600", "<-06>6"}, {"-0530", "<-0530>5:30"}, {"-0500", "<-05>5"}, {"-0430", "<-0430>4:30"}, {"-0400", "<-04>4"}, {"-0330", "<-0330>3:30"}, {"-0300", "<-03>3"}, {"-0230", "<-0230>2:30"}, {"-0200", "<-02>2"}, {"-0130", "<-0130>1:30"}, {"-0100", "<-01>1"}, {"-0030", "<-0030>0:30"}, {"+0000", "<+00>-0"}, {"+0030", "<+0030>-0:30"}, {"+0100", "<+01>-1"}, {"+0130", "<+0130>-1:30"}, {"+0200", "<+02>-2"}, {"+0230", "<+0230>-2:30"}, {"+0300", "<+03>-3"}, {"+0330", "<+0330>-3:30"}, {"+0400", "<+04>-4"}, {"+0430", "<+0430>-4:30"}, {"+0500", "<+05>-5"}, {"+0530", "<+0530>-5:30"}, {"+0600", "<+06>-6"}, {"+0630", "<+0630>-6:30"}, {"+0700", "<+07>-7"}, {"+0730", "<+0730>-7:30"}, {"+0800", "<+08>-8"}, {"+0830", "<+0830>-8:30"}, {"+0900", "<+09>-9"}, {"+0930", "<+0930>-9:30"}, {"+1000", "<+10>-10"}, {"+1030", "<+1030>-10:30"}, {"+1100", "<+11>-11"}, {"+1130", "<+1130>-11:30"}, {"+1200", "<+12>-12"}, {"+1230", "<+1230>-12:30"}, {"+1300", "<+13>-13"}, {"+1330", "<+1330>-13:30"}, {"+1400", "<+14>-14"}};
 int timezone = 25;
@@ -288,6 +288,39 @@ void set_time_Auto()
 
 void set_time_manual()
 {
+  int temp_day = days;
+  while (true)
+  {
+    display.clearDisplay();
+    print_line("Enter day: " + String(temp_day), 2, 0, 2);
+    int pressed = wait_for_button_press();
+    if (pressed == UP)
+    {
+      delay(200);
+      temp_day += 1;
+      temp_day = temp_day % 31; // Assuming a month with 31 days
+    }
+    else if (pressed == DOWN)
+    {
+      delay(200);
+      temp_day -= 1;
+      if (temp_day < 0)
+      {
+        temp_day = 30; // Assuming a month with 31 days
+      }
+    }
+    else if (pressed == OK)
+    {
+      delay(200);
+      break;
+    }
+    else if (pressed == CANCEL)
+    {
+      delay(200);
+      break;
+    }
+  }
+
   int temp_hour = hours;
   while (true)
   {
@@ -348,6 +381,7 @@ void set_time_manual()
       delay(200);
       minutes = temp_minute;
       hours = temp_hour;
+      days = temp_day;
       display.clearDisplay();
       print_line("Time is set", 2, 0, 2);
       break;
