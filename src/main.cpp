@@ -196,7 +196,6 @@ void update_time_with_check_alarm()
     update_time();
   }
 
-  update_time();
   print_time_now();
 
   if (alarm_enabled)
