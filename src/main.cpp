@@ -795,12 +795,6 @@ void setupWifi()
   Serial.println(WiFi.localIP());
 }
 
-void setupMqtt()
-{
-  mqttClient.setServer("test.mosquitto.org", 1883);
-  mqttClient.setCallback(recieveCallback);
-}
-
 void recieveCallback(char *topic, byte *payload, unsigned int length)
 {
   Serial.print("Message arrived [");
@@ -843,6 +837,12 @@ void recieveCallback(char *topic, byte *payload, unsigned int length)
       Serial.println(GAMMA[3]);
     }
   }
+}
+
+void setupMqtt()
+{
+  mqttClient.setServer("test.mosquitto.org", 1883);
+  mqttClient.setCallback(recieveCallback);
 }
 
 void connectToBroker()
