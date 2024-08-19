@@ -43,6 +43,3 @@ The project relies on the following libraries:
 
 Contributions to the Medibox project are welcome! If you have ideas for improvements or new features, feel free to submit a pull request.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
