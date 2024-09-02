@@ -1,45 +1,75 @@
-# Medibox Project (ESP32)
+# Medibox Project
 
-The Medibox project is an ESP32-based system designed to assist with medication management and monitoring. It includes features such as timekeeping, alarm setting, temperature, and humidity monitoring, as well as user interaction via buttons and display.
+The Medibox project uses an ESP32 microcontroller to manage medication schedules, interfacing with various sensors and actuators, displaying data on an OLED screen, and connecting to a Node-RED dashboard via MQTT.
 
-## Features
+## Prerequisites
 
-- Timekeeping: The system keeps track of current time and date, allowing users to schedule medication reminders.
-- Alarm Setting: Users can set up to three different alarms for medication reminders.
-- Temperature and Humidity Monitoring: The system monitors temperature and humidity levels to ensure proper storage conditions for medications.
-- User Interaction: The system provides buttons for user interaction and feedback via an OLED display.
+- Arduino IDE installed
+- ESP32 board support installed in Arduino IDE
+- Required libraries:
+  - Wire
+  - Adafruit GFX
+  - Adafruit SSD1306
+  - DHTesp
+  - WiFi
+  - ESP32Servo
+  - PubSubClient
 
-## Components
+## Installation
 
-The project utilizes the following components:
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/yourusername/medibox-project.git
+    ```
+2. Open the project in Arduino IDE:
+    ```sh
+    File -> Open -> Select main.cpp
+    ```
+3. Install the required libraries in Arduino IDE:
+    ```sh
+    Sketch -> Include Library -> Manage Libraries...
+    ```
+    Search for and install the following libraries:
+    - Adafruit GFX
+    - Adafruit SSD1306
+    - DHTesp
+    - ESP32Servo
+    - PubSubClient
 
-- ESP32 Development Board
-- OLED Display (128x64 pixels)
-- DHT22 Temperature and Humidity Sensor
-- Buzzer
-- LEDs
-- Buttons
+## Usage
 
-## Dependencies
-
-The project relies on the following libraries:
-
-- Wire.h
-- Adafruit_GFX.h
-- Adafruit_SSD1306.h
-- DHTesp.h
-- WiFi.h
-- time.h
-
-## Setup and Usage
-
-1. Connect the components according to the specified pin configuration.
-2. Upload the provided code to your ESP32 development board using the Arduino IDE or PlatformIO.
-3. Ensure proper WiFi connectivity for time synchronization (if applicable).
-4. Power on the system and interact with the buttons to set time, alarms, and other settings as needed.
-5. Monitor the OLED display for system status and medication reminders.
+1. Connect the hardware components as per the pin definitions in [`main.cpp`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FE%3A%2FMedibox%2Fsrc%2Fmain.cpp%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D "e:\Medibox\src\main.cpp").
+2. Configure your WiFi credentials in the code:
+    ```cpp
+    const char* ssid = "your_SSID";
+    const char* password = "your_PASSWORD";
+    ```
+3. Upload the code to the ESP32:
+    ```sh
+    Sketch -> Upload
+    ```
+4. Open the Serial Monitor to view the output:
+    ```sh
+    Tools -> Serial Monitor
+    ```
 
 ## Contributing
 
-Contributions to the Medibox project are welcome! If you have ideas for improvements or new features, feel free to submit a pull request.
+1. Fork the repository.
+2. Create a new branch:
+    ```sh
+    git checkout -b feature-branch
+    ```
+3. Make your changes and commit them:
+    ```sh
+    git commit -m "Description of changes"
+    ```
+4. Push to the branch:
+    ```sh
+    git push origin feature-branch
+    ```
+5. Open a pull request.
 
+## License
+
+This project is licensed under the MIT License.
